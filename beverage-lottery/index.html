@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>今天喝飲料</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<style>
+    .marquee {
+      font-size: xx-large;
+    }
+   
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2 class="text-center mb-4">今天喝飲料</h2>
+        <div id="inputContainer">
+          <div class="form-group">
+            <label for="reason">給我一個喝飲料的理由</label>
+            <input type="text" class="form-control" id="reason" placeholder="給我一個喝飲料的理由">
+          </div>
+          <button class="btn btn-primary btn-block" id="reason-btn" onclick="addReason()">送出</button>
+        </div>
+				<div>
+					
+				</div>
+        <div id="marqueeContainer" class="marquee mt-4"></div>
+        <button id="lotteryButton" class="btn btn-success btn-block mt-4" onclick="startLottery()" disabled>開始抽選</button>
+        <div id="result" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var reasonEntered = false;
+    var reasons = [];
+
+    function addReason() {
+      var reason = document.getElementById('reason').value.trim();
+      if (reason !== "") {
+        reasons.push(reason);
+        displayReason();
+        reasonEntered = true;
+        document.getElementById('reason').disabled = true;
+        document.getElementById('reason-btn').disabled = true;
+        document.getElementById('lotteryButton').removeAttribute('disabled');
+      } else {
+        alert("請輸入請客原因！");
+      }
+    }
+
+    function displayReason() {
+      var marqueeContent = "";
+      for (var i = 0; i < reasons.length; i++) {
+        marqueeContent += `<marquee width="100%" direction="left">${reasons[i]}</marquee>`;
+				
+      }
+      document.getElementById('marqueeContainer').innerHTML = marqueeContent;
+    }
+
+    function startLottery() {
+      if (!reasonEntered) {
+        alert("請先輸入請客原因！");
+        return;
+      }
+
+      var candidates = [
+        '可不可', '清心', '得正', '烏弄', '天仁', '迷客夏', '水巷', '約翰紅茶公司', '一手',
+        '再睡五分鐘', '龜記', '老賴', '麻古', '五桐號', '一木日', '50嵐', '慈禧', '坪林手',
+        '康青龍', '泰讚了', '珍煮丹', 'comebuy', '萬波', '春水堂', 'coco', '大苑子', '春芳號', '茶湯會'
+      ];
+
+      var winner = candidates[Math.floor(Math.random() * candidates.length)];
+
+      document.getElementById('result').innerHTML = `
+        <div class="alert alert-success" role="alert">
+          恭喜！抽中了 <strong>${winner}</strong>！
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
